@@ -63,13 +63,13 @@ class ContextEncoder():
         model = Sequential()
 
         # Encoder
-        model.add(Conv2D(32, kernel_size=3, strides=2, input_shape=self.img_shape, padding="same"))
+        model.add(Conv2D(128, kernel_size=5, strides=2, input_shape=self.img_shape, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
-        model.add(Conv2D(64, kernel_size=3, strides=2, padding="same"))
+        model.add(Conv2D(128, kernel_size=5, strides=2, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
-        model.add(Conv2D(128, kernel_size=3, strides=2, padding="same"))
+        model.add(Conv2D(128, kernel_size=5, strides=2, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
 
@@ -83,7 +83,7 @@ class ContextEncoder():
         model.add(Activation('relu'))
         model.add(BatchNormalization(momentum=0.8))
         model.add(UpSampling2D())
-        model.add(Conv2D(64, kernel_size=3, padding="same"))
+        model.add(Conv2D(128, kernel_size=3, padding="same"))
         model.add(Activation('relu'))
         model.add(BatchNormalization(momentum=0.8))
         model.add(Conv2D(self.channels, kernel_size=3, padding="same"))
@@ -100,13 +100,13 @@ class ContextEncoder():
 
         model = Sequential()
 
-        model.add(Conv2D(64, kernel_size=3, strides=2, input_shape=self.missing_shape, padding="same"))
+        model.add(Conv2D(128, kernel_size=5, strides=2, input_shape=self.missing_shape, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
-        model.add(Conv2D(128, kernel_size=3, strides=2, padding="same"))
+        model.add(Conv2D(128, kernel_size=5, strides=2, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
-        model.add(Conv2D(256, kernel_size=3, padding="same"))
+        model.add(Conv2D(256, kernel_size=5, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
         model.add(Flatten())
