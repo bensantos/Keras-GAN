@@ -13,6 +13,7 @@ from keras import losses
 from keras.utils import to_categorical
 import keras.backend as K
 import scipy
+import scipy.misc
 
 import matplotlib.pyplot as plt
 
@@ -20,10 +21,13 @@ import numpy as np
 
 class CCGAN():
     def __init__(self):
+        #defining image shapes
         self.img_rows = 32
         self.img_cols = 32
         self.channels = 1
+        #setting up a variable
         self.img_shape = (self.img_rows, self.img_cols, self.channels)
+        #size of mask on image
         self.mask_height = 10
         self.mask_width = 10
         self.num_classes = 10
