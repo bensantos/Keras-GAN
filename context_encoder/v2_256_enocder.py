@@ -184,44 +184,45 @@ class ContextEncoder():
         fake = np.zeros((batch_size, 1))
 
         for epoch in range(epochs):
+            print("Epoch " + str(epoch))
+            for i in range(int(len(train_data)/batch_size))
+                # ---------------------
+                #  Train Discriminator
+                # ---------------------
 
-            # ---------------------
-            #  Train Discriminator
-            # ---------------------
-
-            # Select a random batch of images
-            imgs  = create_dataset(train_data, 256, 256, 128)
-            imgs = imgs/127.5 - 1
+                # Select a random batch of images
+                imgs  = create_dataset(train_data, 256, 256, 128)
+                imgs = imgs/127.5 - 1
 
 
-            #idx = np.random.randint(0, X_train.shape[0], batch_size)
-            #imgs = X_train[idx]
-
-            masked_imgs, missing_parts, _ = self.mask_randomly(imgs)
-
-            # Generate a batch of new images
-            gen_missing = self.generator.predict(masked_imgs)
-
-            # Train the discriminator
-            d_loss_real = self.discriminator.train_on_batch(missing_parts, valid)
-            d_loss_fake = self.discriminator.train_on_batch(gen_missing, fake)
-            d_loss = 0.5 * np.add(d_loss_real, d_loss_fake)
-
-            # ---------------------
-            #  Train Generator
-            # ---------------------
-
-            g_loss = self.combined.train_on_batch(masked_imgs, [missing_parts, valid])
-
-            # Plot the progress
-            print ("%d [D loss: %f, acc: %.2f%%] [G loss: %f, mse: %f]" % (epoch, d_loss[0], 100*d_loss[1], g_loss[0], g_loss[1]), end='\r')
-
-            # If at save interval => save generated image samples
-            if epoch % sample_interval == 0:
-                #idx = np.random.randint(0, X_train.shape[0], 6)
+                #idx = np.random.randint(0, X_train.shape[0], batch_size)
                 #imgs = X_train[idx]
-                self.sample_images(epoch, imgs)
-        print('\n')
+
+                masked_imgs, missing_parts, _ = self.mask_randomly(imgs)
+
+                # Generate a batch of new images
+                gen_missing = self.generator.predict(masked_imgs)
+
+                # Train the discriminator
+                d_loss_real = self.discriminator.train_on_batch(missing_parts, valid)
+                d_loss_fake = self.discriminator.train_on_batch(gen_missing, fake)
+                d_loss = 0.5 * np.add(d_loss_real, d_loss_fake)
+
+                # ---------------------
+                #  Train Generator
+                # ---------------------
+
+                g_loss = self.combined.train_on_batch(masked_imgs, [missing_parts, valid])
+
+                # Plot the progress
+                print ("%d [D loss: %f, acc: %.2f%%] [G loss: %f, mse: %f]" % (epoch, d_loss[0], 100*d_loss[1], g_loss[0], g_loss[1]), end='\r')
+
+                # If at save interval => save generated image samples
+                if epoch % sample_interval == 0:
+                    #idx = np.random.randint(0, X_train.shape[0], 6)
+                    #imgs = X_train[idx]
+                    self.sample_images(epoch, imgs)
+        
 
     def sample_images(self, epoch, imgs):
         r, c = 3, 6
