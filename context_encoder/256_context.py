@@ -188,8 +188,9 @@ class ContextEncoder():
             # ---------------------
 
             # Select a random batch of images
-            imgs = images = create_dataset(train_data, 256, 256, 128)
-            img = imgs/127.5 - 1
+            print(len(train_data))
+            imgs  = create_dataset(train_data, 256, 256, 128)
+            imgs = imgs/127.5 - 1
 
 
             #idx = np.random.randint(0, X_train.shape[0], batch_size)
