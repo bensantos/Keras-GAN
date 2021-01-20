@@ -191,7 +191,7 @@ class ContextEncoder():
                 # ---------------------
 
                 # Select a random batch of images
-                imgs  = create_dataset(train_data, 256, 256, 128)
+                imgs  = create_dataset(train_data, 256, 256, batch_size)
                 imgs = imgs/127.5 - 1
 
 
@@ -266,6 +266,6 @@ class ContextEncoder():
 if __name__ == '__main__':
     paths = get_image_paths(r"/home/ben/gans_git/auto_encoder_experiments/cocodataset/unlabeled2017")
     context_encoder = ContextEncoder()
-    context_encoder.train(paths, epochs= 100, batch_size=128, sample_interval=50)
+    context_encoder.train(paths, epochs= 100, batch_size=256, sample_interval=50)
     context_encoder.save_model()
 
