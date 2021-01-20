@@ -259,9 +259,9 @@ class ContextEncoder():
             open(options['file_arch'], 'w').write(json_string)
             model.save_weights(options['file_weight'])
 
-        save(self.generator, "generator" + str(epoch))
-        save(self.discriminator, "discriminator" + + str(epoch))
-        save(self.generator, "gan" + + str(epoch))
+        save(self.generator, ("generator" + str(epoch)))
+        save(self.discriminator, ("discriminator" + + str(epoch)))
+        save(self.generator, ("gan" + + str(epoch)))
 
 
 if __name__ == '__main__':
