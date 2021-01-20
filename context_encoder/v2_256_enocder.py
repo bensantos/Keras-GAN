@@ -90,7 +90,7 @@ class ContextEncoder():
         model.add(LeakyReLU(alpha=0.2))
         model.add(Dropout(0.5))
 
-
+        model.add(Flatten())
         # Decoder
         model.add(Conv2DTranspose(512, kernel_size=4, strides=2, padding='same', activation='relu'))
         model.add(LeakyReLU(alpha=0.2))
