@@ -1,7 +1,7 @@
 from __future__ import print_function, division
 
 from keras.datasets import cifar10
-from keras.layers import Input, Dense, Reshape, Flatten, Dropout, multiply, GaussianNoise
+from keras.layers import Input, Dense, Reshape, Flatten, Dropout, multiply, GaussianNoise, Conv2DTranspose
 from keras.layers import BatchNormalization, Activation, Embedding, ZeroPadding2D
 from keras.layers import MaxPooling2D
 from keras.layers.advanced_activations import LeakyReLU
@@ -11,17 +11,19 @@ from keras.optimizers import Adam
 from keras import losses
 from keras.utils import to_categorical
 import keras.backend as K
-
-import matplotlib.pyplot as plt
-
 import numpy as np
+import matplotlib.pyplot as plt
+from load_images import get_image_paths, create_dataset
+
+
+
 
 class ContextEncoder():
     def __init__(self):
         self.img_rows = 256
         self.img_cols = 256
-        self.mask_height = 50
-        self.mask_width = 50
+        self.mask_height = 64
+        self.mask_width = 64
         self.channels = 3
         self.num_classes = 2
         self.img_shape = (self.img_rows, self.img_cols, self.channels)
@@ -63,33 +65,51 @@ class ContextEncoder():
         model = Sequential()
 
         # Encoder
-        model.add(Conv2D(32, kernel_size=3, strides=2, input_shape=self.img_shape, padding="same"))
-        model.add(LeakyReLU(alpha=0.2))
-        model.add(BatchNormalization(momentum=0.8))
-        model.add(Conv2D(64, kernel_size=3, strides=2, padding="same"))
-        model.add(LeakyReLU(alpha=0.2))
-        model.add(BatchNormalization(momentum=0.8))
-        model.add(Conv2D(128, kernel_size=3, strides=2, padding="same"))
+        model.add(Conv2D(64, kernel_size=4, strides=2, input_shape=self.img_shape, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
 
-        model.add(Conv2D(512, kernel_size=1, strides=2, padding="same"))
+        model.add(Conv2D(128, kernel_size=4, strides=2, padding="same"))
+        model.add(LeakyReLU(alpha=0.2))
+        model.add(BatchNormalization(momentum=0.8))
+
+        model.add(Conv2D(256, kernel_size=4, strides=2, padding="same"))
+        model.add(LeakyReLU(alpha=0.2))
+        model.add(BatchNormalization(momentum=0.8))
+
+        model.add(Conv2D(512, kernel_size=4, strides=2, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
         model.add(Dropout(0.5))
 
-        # Decoder
-        model.add(UpSampling2D())
-        model.add(Conv2D(128, kernel_size=3, padding="same"))
-        model.add(Activation('relu'))
-        model.add(BatchNormalization(momentum=0.8))
-        model.add(UpSampling2D())
-        model.add(Conv2D(64, kernel_size=3, padding="same"))
-        model.add(Activation('relu'))
-        model.add(BatchNormalization(momentum=0.8))
-        model.add(Conv2D(self.channels, kernel_size=3, padding="same"))
-        model.add(Activation('tanh'))
+        model.add(Conv2D(512, kernel_size=4, strides=2, padding="same"))
+        model.add(LeakyReLU(alpha=0.2))
+        model.add(Dropout(0.5))
 
-        model.summary()
+        model.add(Conv2D(512, kernel_size=4, strides=2, padding="same"))
+        model.add(LeakyReLU(alpha=0.2))
+        model.add(Dropout(0.5))
+
+
+        # Decoder
+        model.add(Conv2DTranspose(512, kernel_size=4, strides=2, padding='same', activation='relu'))
+        model.add(LeakyReLU(alpha=0.2))
+        model.add(BatchNormalization(momentum=0.8))
+
+        model.add(Conv2DTranspose(256, kernel_size=4, strides=2, padding='same', activation='relu'))
+        model.add(LeakyReLU(alpha=0.2))
+        model.add(BatchNormalization(momentum=0.8))
+
+        model.add(Conv2DTranspose(256, kernel_size=4, strides=2, padding='same', activation='relu'))
+        model.add(LeakyReLU(alpha=0.2))
+        model.add(BatchNormalization(momentum=0.8))
+
+        model.add(Conv2DTranspose(128, kernel_size=4, strides=2, padding='same', activation='relu'))
+        model.add(LeakyReLU(alpha=0.2))
+        model.add(BatchNormalization(momentum=0.8))
+
+        model.add(Conv2D(3, kernel_size=4, strides=1, padding='same', activation='tanh'))
+
+        #model.summary()
 
         masked_img = Input(shape=self.img_shape)
         gen_missing = model(masked_img)
@@ -100,18 +120,25 @@ class ContextEncoder():
 
         model = Sequential()
 
-        model.add(Conv2D(64, kernel_size=3, strides=2, input_shape=self.missing_shape, padding="same"))
+        model.add(Conv2D(64, kernel_size=4, strides=2, input_shape=self.missing_shape, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
-        model.add(Conv2D(128, kernel_size=3, strides=2, padding="same"))
+        model.add(Conv2D(128, kernel_size=4, strides=2, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
-        model.add(Conv2D(256, kernel_size=3, padding="same"))
+        model.add(Conv2D(256, kernel_size=4, strides=2, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
+        model.add(Conv2D(256, kernel_size=4, strides=2, padding="same"))
+        model.add(LeakyReLU(alpha=0.2))
+        model.add(BatchNormalization(momentum=0.8))
+        model.add(Conv2D(256, kernel_size=4, strides=2, padding="same"))
+        model.add(LeakyReLU(alpha=0.2))
+        model.add(BatchNormalization(momentum=0.8))
+
         model.add(Flatten())
         model.add(Dense(1, activation='sigmoid'))
-        model.summary()
+        #model.summary()
 
         img = Input(shape=self.missing_shape)
         validity = model(img)
@@ -137,19 +164,18 @@ class ContextEncoder():
 
 
 
-    def train(self, epochs, batch_size=128, sample_interval=50):
+    def train(self, train_data, epochs, batch_size=128, sample_interval=50):
 
-        # Load the dataset
-        (X_train, y_train), (_, _) = cifar10.load_data()
-
+        
+        #(X_train, y_train), (_, _) = cifar10.load_data()
         # Extract dogs and cats
-        X_cats = X_train[(y_train == 3).flatten()]
-        X_dogs = X_train[(y_train == 5).flatten()]
-        X_train = np.vstack((X_cats, X_dogs))
+        #X_cats = X_train[(y_train == 3).flatten()]
+        #X_dogs = X_train[(y_train == 5).flatten()]
+        #X_train = np.vstack((X_cats, X_dogs))
 
         # Rescale -1 to 1
-        X_train = X_train / 127.5 - 1.
-        y_train = y_train.reshape(-1, 1)
+        #X_train = X_train / 127.5 - 1.
+        #y_train = y_train.reshape(-1, 1)
 
         # Adversarial ground truths
         valid = np.ones((batch_size, 1))
@@ -162,8 +188,12 @@ class ContextEncoder():
             # ---------------------
 
             # Select a random batch of images
-            idx = np.random.randint(0, X_train.shape[0], batch_size)
-            imgs = X_train[idx]
+            imgs = images = create_dataset(train_data, 256, 256, 128)
+            img = imgs/127.5 - 1
+
+
+            #idx = np.random.randint(0, X_train.shape[0], batch_size)
+            #imgs = X_train[idx]
 
             masked_imgs, missing_parts, _ = self.mask_randomly(imgs)
 
@@ -229,7 +259,8 @@ class ContextEncoder():
 
 
 if __name__ == '__main__':
+    paths = get_image_paths(r"D:\Kaspar\unlabeled2017\unlabeled2017")
     context_encoder = ContextEncoder()
-    context_encoder.train(epochs= 30000, batch_size=128, sample_interval=50)
+    context_encoder.train(paths, epochs= 30000, batch_size=128, sample_interval=50)
     context_encoder.save_model()
 

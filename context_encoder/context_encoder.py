@@ -11,7 +11,7 @@ from keras.optimizers import Adam
 from keras import losses
 from keras.utils import to_categorical
 import keras.backend as K
-
+from load_images import get_image_paths, create_dataset
 import matplotlib.pyplot as plt
 
 import numpy as np
@@ -89,10 +89,11 @@ class ContextEncoder():
         model.add(Conv2D(self.channels, kernel_size=3, padding="same"))
         model.add(Activation('tanh'))
 
-        model.summary()
+        #model.summary()
 
         masked_img = Input(shape=self.img_shape)
         gen_missing = model(masked_img)
+        print(gen_missing.shape)
 
         return Model(masked_img, gen_missing)
 
@@ -141,6 +142,7 @@ class ContextEncoder():
 
         # Load the dataset
         (X_train, y_train), (_, _) = cifar10.load_data()
+        print(y_train.shape)
 
         # Extract dogs and cats
         X_cats = X_train[(y_train == 3).flatten()]
