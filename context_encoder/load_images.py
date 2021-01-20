@@ -32,9 +32,9 @@ def create_dataset(paths, IMG_HEIGHT, IMG_WIDTH, batch_size):
         image = image.astype('float32')
         img_data_array.append(image)
         #class_name.append(dir1)
-    #img_data_array = np.array(img_data_array)
+    img_data_array = np.array(img_data_array)
     return img_data_array
 
-#paths = get_image_paths(r"D:\Kaspar\unlabeled2017\unlabeled2017")
-#images = create_dataset(paths, 256, 256, 128)
+paths = get_image_paths(r"D:\Kaspar\unlabeled2017\unlabeled2017")
+images = create_dataset(paths, 256, 256, 128)
 #print(images.shape)
