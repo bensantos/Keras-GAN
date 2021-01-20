@@ -26,15 +26,13 @@ def create_dataset(paths, IMG_HEIGHT, IMG_WIDTH, batch_size):
     idx_list = np.random.randint(0, len(paths), batch_size)
     for index in idx_list:
         image_path = paths[index]
-        print(image_path)
         image= cv2.imread( image_path, cv2.COLOR_BGR2RGB)
         image=cv2.resize(image, (IMG_HEIGHT, IMG_WIDTH),interpolation = cv2.INTER_AREA)
         image=np.array(image)
-        print(image.shape)
         image = image.astype('float32')
         img_data_array.append(image)
         #class_name.append(dir1)
-    img_data_array = np.array(img_data_array)
+    #img_data_array = np.array(img_data_array)
     return img_data_array
 
 #paths = get_image_paths(r"D:\Kaspar\unlabeled2017\unlabeled2017")
