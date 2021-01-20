@@ -185,7 +185,7 @@ class ContextEncoder():
 
         for epoch in range(epochs):
             print("Epoch " + str(epoch))
-            for i in range(int(len(train_data)/batch_size))
+            for i in range(int(len(train_data)/batch_size)):
                 # ---------------------
                 #  Train Discriminator
                 # ---------------------
