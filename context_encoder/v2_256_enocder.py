@@ -248,7 +248,7 @@ class ContextEncoder():
         fig.savefig("images/%d.png" % epoch)
         plt.close()
 
-    def save_model(self):
+    def save_model(self, epoch):
 
         def save(model, model_name):
             model_path = "saved_model/%s.json" % model_name
@@ -259,9 +259,9 @@ class ContextEncoder():
             open(options['file_arch'], 'w').write(json_string)
             model.save_weights(options['file_weight'])
 
-        save(self.generator, "generator")
-        save(self.discriminator, "discriminator")
-        save(self.generator, "gan")
+        save(self.generator, "generator" + str(epoch))
+        save(self.discriminator, "discriminator" + + str(epoch))
+        save(self.generator, "gan" + + str(epoch))
 
 
 if __name__ == '__main__':
