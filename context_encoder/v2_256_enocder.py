@@ -30,12 +30,12 @@ class ContextEncoder():
         self.img_shape = (self.img_rows, self.img_cols, self.channels)
         self.missing_shape = (self.mask_height, self.mask_width, self.channels)
 
-        optimizer = Adam(0.0004, 0.5)
+        optimizer = Adam(0.0001, 0.5)
 
         # Build and compile the discriminator
         self.discriminator = self.build_discriminator()
         self.discriminator.compile(loss='binary_crossentropy',
-            optimizer=Adam(0.0001, 0.5),
+            optimizer=Adam(0.0004, 0.5),
             metrics=['accuracy'])
 
         # Build the generator
@@ -166,9 +166,10 @@ class ContextEncoder():
 
 
 
-    def train(self, train_data, epochs, batch_size=256, sample_interval=50):
+    def train(self, train_data, epochs, batch_size=256, sample_interval=50, load = False):
 
-        
+        if load == True:
+            self.generator = keras.models.load_model()
         #(X_train, y_train), (_, _) = cifar10.load_data()
         # Extract dogs and cats
         #X_cats = X_train[(y_train == 3).flatten()]
@@ -184,8 +185,8 @@ class ContextEncoder():
         fake = np.zeros((batch_size, 1))
         
         for epoch in range(epochs):
-            valid = valid - (np.random.uniform(0,.05))
-            fake = fake + (np.random.uniform(0,.05))
+            valid = valid - (np.random.uniform(0,.07))
+            fake = fake + (np.random.uniform(0,.07))
             tq = tqdm(range(int(len(train_data)/batch_size)), desc=f"Epoch: {epoch}")
             for ind in tq:
                 # ---------------------
@@ -224,8 +225,8 @@ class ContextEncoder():
                 if ind % sample_interval == 0:
                     #idx = np.random.randint(0, X_train.shape[0], 6)
                     #imgs = X_train[idx]
-                    self.sample_images(epoch, imgs)
-        self.save_model(epoch)
+                    self.sample_images(ind, imgs)
+            self.save_model(epoch)
 
     def sample_images(self, epoch, imgs):
         r, c = 3, 6
@@ -269,6 +270,6 @@ class ContextEncoder():
 if __name__ == '__main__':
     paths = get_image_paths(r"/home/ben/gans_git/auto_encoder_experiments/cocodataset/unlabeled2017")
     context_encoder = ContextEncoder()
-    context_encoder.train(paths, epochs= 100, batch_size=256, sample_interval=50)
+    context_encoder.train(paths, epochs= 100, batch_size=256, sample_interval=50, load = False)
     context_encoder.save_model()
 
