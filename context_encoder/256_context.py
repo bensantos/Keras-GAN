@@ -189,7 +189,6 @@ class ContextEncoder():
             # ---------------------
 
             # Select a random batch of images
-            print(len(train_data))
             imgs  = create_dataset(train_data, 256, 256, 128)
             imgs = imgs/127.5 - 1
 
