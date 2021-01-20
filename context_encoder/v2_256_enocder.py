@@ -261,11 +261,12 @@ class ContextEncoder():
 
         save(self.generator, "generator")
         save(self.discriminator, "discriminator")
+        save(self.generator, "gan")
 
 
 if __name__ == '__main__':
     paths = get_image_paths(r"/home/ben/gans_git/auto_encoder_experiments/cocodataset/unlabeled2017")
     context_encoder = ContextEncoder()
-    context_encoder.train(paths, epochs= 100, batch_size=256, sample_interval=50)
+    context_encoder.train(paths, epochs= 1, batch_size=1, sample_interval=100)
     context_encoder.save_model()
 
