@@ -261,8 +261,7 @@ class ContextEncoder():
 
 
 if __name__ == '__main__':
-    paths = get_image_paths(r"D:\Kaspar\unlabeled2017\unlabeled2017")
-    print(len(paths))
+    paths = get_image_paths(r"/home/ben/gans_git/auto_encoder_experiments/cocodataset/unlabeled2017")
     context_encoder = ContextEncoder()
     context_encoder.train(paths, epochs= 30000, batch_size=128, sample_interval=50)
     context_encoder.save_model()
