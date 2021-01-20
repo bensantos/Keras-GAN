@@ -142,7 +142,7 @@ class ContextEncoder():
 
         # Load the dataset
         (X_train, y_train), (_, _) = cifar10.load_data()
-        print(y_train.shape)
+        
 
         # Extract dogs and cats
         X_cats = X_train[(y_train == 3).flatten()]
