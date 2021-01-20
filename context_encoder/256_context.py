@@ -1,5 +1,6 @@
 from __future__ import print_function, division
-
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 from keras.datasets import cifar10
 from keras.layers import Input, Dense, Reshape, Flatten, Dropout, multiply, GaussianNoise, Conv2DTranspose
 from keras.layers import BatchNormalization, Activation, Embedding, ZeroPadding2D
@@ -261,6 +262,7 @@ class ContextEncoder():
 
 if __name__ == '__main__':
     paths = get_image_paths(r"D:\Kaspar\unlabeled2017\unlabeled2017")
+    print(len(paths))
     context_encoder = ContextEncoder()
     context_encoder.train(paths, epochs= 30000, batch_size=128, sample_interval=50)
     context_encoder.save_model()
