@@ -30,12 +30,12 @@ class ContextEncoder():
         self.img_shape = (self.img_rows, self.img_cols, self.channels)
         self.missing_shape = (self.mask_height, self.mask_width, self.channels)
 
-        optimizer = Adam(0.0004, 0.5)
+        optimizer = Adam(0.0002, 0.5)
 
         # Build and compile the discriminator
         self.discriminator = self.build_discriminator()
         self.discriminator.compile(loss='binary_crossentropy',
-            optimizer=Adam(0.0001, 0.5),
+            optimizer=Adam(0.0002, 0.5),
             metrics=['accuracy'])
 
         # Build the generator
