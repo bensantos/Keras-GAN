@@ -30,12 +30,12 @@ class ContextEncoder():
         self.img_shape = (self.img_rows, self.img_cols, self.channels)
         self.missing_shape = (self.mask_height, self.mask_width, self.channels)
 
-        optimizer = Adam(0.0002, 0.5)
+        optimizer = Adam(0.0004, 0.5)
 
         # Build and compile the discriminator
         self.discriminator = self.build_discriminator()
         self.discriminator.compile(loss='binary_crossentropy',
-            optimizer=optimizer,
+            optimizer=Adam(0.0001, 0.5),
             metrics=['accuracy'])
 
         # Build the generator
@@ -186,7 +186,6 @@ class ContextEncoder():
         for epoch in range(epochs):
             tq = tqdm(range(int(len(train_data)/batch_size)), desc=f"Epoch: {epoch}")
             for ind in tq:
-                print(ind)
                 # ---------------------
                 #  Train Discriminator
                 # ---------------------
