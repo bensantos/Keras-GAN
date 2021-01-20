@@ -183,7 +183,7 @@ class ContextEncoder():
         valid = np.ones((batch_size, 1))
         fake = np.zeros((batch_size, 1))
 
-        for epoch in tqdm(range(epochs),desc=f"Epoch {epoch}"):
+        for epoch in tqdm(range(epochs)):
 
             # ---------------------
             #  Train Discriminator
