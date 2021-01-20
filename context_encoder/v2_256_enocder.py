@@ -216,7 +216,7 @@ class ContextEncoder():
                 g_loss = self.combined.train_on_batch(masked_imgs, [missing_parts, valid])
 
                 # Plot the progress
-                tq.set_postfix_str("%d [D loss: %f, acc: %.2f%%] [G loss: %f, mse: %f]" % (epoch, d_loss[0], 100*d_loss[1], g_loss[0], g_loss[1]))
+                tq.set_postfix_str("%d [D loss: %f] [G loss: %f, mse: %f]" % (epoch, d_loss[0], 100*d_loss[1], g_loss[0], g_loss[1]))
                 #print ("%d [D loss: %f, acc: %.2f%%] [G loss: %f, mse: %f]" % (epoch, d_loss[0], 100*d_loss[1], g_loss[0], g_loss[1]), end='\r')
                 
                 # If at save interval => save generated image samples
