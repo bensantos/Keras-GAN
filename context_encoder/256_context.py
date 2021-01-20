@@ -15,7 +15,7 @@ import keras.backend as K
 import numpy as np
 import matplotlib.pyplot as plt
 from load_images import get_image_paths, create_dataset
-
+import cv2
 
 
 
@@ -234,13 +234,13 @@ class ContextEncoder():
 
         fig, axs = plt.subplots(r, c)
         for i in range(c):
-            axs[0,i].imshow(imgs[i, :,:], cv2.COLOR_BGR2RGB)
+            axs[0,i].imshow(cv2.cvtColor(imgs[i, :,:], cv2.COLOR_BGR2RGB))
             axs[0,i].axis('off')
-            axs[1,i].imshow(masked_imgs[i, :,:], cv2.COLOR_BGR2RGB)
+            axs[1,i].imshow(cv2.cvtColor(masked_imgs[i, :,:], cv2.COLOR_BGR2RGB))
             axs[1,i].axis('off')
             filled_in = imgs[i].copy()
             filled_in[y1[i]:y2[i], x1[i]:x2[i], :] = gen_missing[i]
-            axs[2,i].imshow(filled_in, cv2.COLOR_BGR2RGB)
+            axs[2,i].imshow(cv2.cvtColor(filled_in, cv2.COLOR_BGR2RGB))
             axs[2,i].axis('off')
         fig.savefig("images/%d.png" % epoch)
         plt.close()
