@@ -35,8 +35,7 @@ class ContextEncoder():
         # Build and compile the discriminator
         self.discriminator = self.build_discriminator()
         self.discriminator.compile(loss='binary_crossentropy',
-            optimizer=Adam(0.0004, 0.5),
-            metrics=['accuracy'])
+            optimizer=Adam(0.0004, 0.5))
 
         # Build the generator
         self.generator = self.build_generator()
@@ -58,7 +57,7 @@ class ContextEncoder():
         self.combined = Model(masked_img , [gen_missing, valid])
         self.combined.compile(loss=['mse', 'binary_crossentropy'],
             loss_weights=[0.999, 0.001],
-            optimizer=optimizer)
+            optimizer=Adam(0.0001, 0.5))
 
     def build_generator(self):
 
@@ -90,7 +89,6 @@ class ContextEncoder():
         model.add(LeakyReLU(alpha=0.2))
         model.add(Dropout(0.5))
 
-        model.add(Flatten())
         # Decoder
         model.add(Conv2DTranspose(512, kernel_size=4, strides=2, padding='same', activation='relu'))
         model.add(LeakyReLU(alpha=0.2))
@@ -121,13 +119,13 @@ class ContextEncoder():
 
         model = Sequential()
 
-        model.add(Conv2D(512, kernel_size=4, strides=2, input_shape=self.missing_shape, padding="same"))
+        model.add(Conv2D(128, kernel_size=4, strides=2, input_shape=self.missing_shape, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
-        model.add(Conv2D(256, kernel_size=4, strides=2, padding="same"))
+        model.add(Conv2D(128, kernel_size=4, strides=2, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
-        model.add(Conv2D(256, kernel_size=4, strides=2, padding="same"))
+        model.add(Conv2D(128, kernel_size=4, strides=2, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
         model.add(Conv2D(128, kernel_size=4, strides=2, padding="same"))
