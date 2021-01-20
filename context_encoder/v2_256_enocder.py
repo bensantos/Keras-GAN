@@ -180,12 +180,12 @@ class ContextEncoder():
         #y_train = y_train.reshape(-1, 1)
 
         # Adversarial ground truths
-        #valid = np.ones((batch_size, 1))
-        #fake = np.zeros((batch_size, 1))
+        valid = np.ones((batch_size, 1))
+        fake = np.zeros((batch_size, 1))
         
         for epoch in range(epochs):
-            valid = valid - (np.random.uniform(0,.05))
-            fake = fake + (np.random.uniform(0,.05))
+            #valid = valid - (np.random.uniform(0,.05))
+            #fake = fake + (np.random.uniform(0,.05))
             tq = tqdm(range(int(len(train_data)/batch_size)), desc=f"Epoch: {epoch}")
             for ind in tq:
                 # ---------------------
