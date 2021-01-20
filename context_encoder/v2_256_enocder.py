@@ -35,7 +35,8 @@ class ContextEncoder():
         # Build and compile the discriminator
         self.discriminator = self.build_discriminator()
         self.discriminator.compile(loss='binary_crossentropy',
-            optimizer=Adam(0.0004, 0.5))
+            optimizer=Adam(0.0004, 0.5),
+            metrics = ['accuracy'])
 
         # Build the generator
         self.generator = self.build_generator()
@@ -216,7 +217,7 @@ class ContextEncoder():
                 g_loss = self.combined.train_on_batch(masked_imgs, [missing_parts, valid])
 
                 # Plot the progress
-                tq.set_postfix_str("%d [D loss: %f] [G loss: %f, mse: %f]" % (epoch, d_loss[0], 100*d_loss[1], g_loss[0], g_loss[1]))
+                tq.set_postfix_str("%d [D loss: %f, acc: %.2f%%] [G loss: %f, mse: %f]" % (epoch, d_loss[0], 100*d_loss[1], g_loss[0], g_loss[1]))
                 #print ("%d [D loss: %f, acc: %.2f%%] [G loss: %f, mse: %f]" % (epoch, d_loss[0], 100*d_loss[1], g_loss[0], g_loss[1]), end='\r')
                 
                 # If at save interval => save generated image samples
