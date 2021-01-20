@@ -217,7 +217,7 @@ class ContextEncoder():
                 # Plot the progress
                 tq.set_postfix_str("%d [D loss: %f, acc: %.2f%%] [G loss: %f, mse: %f]" % (epoch, d_loss[0], 100*d_loss[1], g_loss[0], g_loss[1]))
                 #print ("%d [D loss: %f, acc: %.2f%%] [G loss: %f, mse: %f]" % (epoch, d_loss[0], 100*d_loss[1], g_loss[0], g_loss[1]), end='\r')
-
+                save_model()
                 # If at save interval => save generated image samples
                 if epoch % sample_interval == 0:
                     #idx = np.random.randint(0, X_train.shape[0], 6)
@@ -267,6 +267,6 @@ class ContextEncoder():
 if __name__ == '__main__':
     paths = get_image_paths(r"/home/ben/gans_git/auto_encoder_experiments/cocodataset/unlabeled2017")
     context_encoder = ContextEncoder()
-    context_encoder.train(paths, epochs= 1, batch_size=1, sample_interval=100)
+    context_encoder.train(paths, epochs= 100, batch_size=256, sample_interval=100)
     context_encoder.save_model()
 
