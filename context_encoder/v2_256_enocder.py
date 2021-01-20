@@ -166,7 +166,7 @@ class ContextEncoder():
 
 
 
-    def train(self, train_data, epochs, batch_size=128, sample_interval=50):
+    def train(self, train_data, epochs, batch_size=256, sample_interval=50):
 
         
         #(X_train, y_train), (_, _) = cifar10.load_data()
@@ -184,8 +184,8 @@ class ContextEncoder():
         fake = np.zeros((batch_size, 1))
 
         for epoch in range(epochs):
-            print("Epoch " + str(epoch))
-            for i in tqdm(range(int(len(train_data)/batch_size))):
+            tq = tqdm(range(int(len(train_data)/batch_size)), desc=f"Epoch: {epoch}")
+            for ind in tq:
                 # ---------------------
                 #  Train Discriminator
                 # ---------------------
@@ -215,7 +215,8 @@ class ContextEncoder():
                 g_loss = self.combined.train_on_batch(masked_imgs, [missing_parts, valid])
 
                 # Plot the progress
-                print ("%d [D loss: %f, acc: %.2f%%] [G loss: %f, mse: %f]" % (epoch, d_loss[0], 100*d_loss[1], g_loss[0], g_loss[1]), end='\r')
+                tq.set_postfix_str("%d [D loss: %f, acc: %.2f%%] [G loss: %f, mse: %f]" % (epoch, d_loss[0], 100*d_loss[1], g_loss[0], g_loss[1]))
+                #print ("%d [D loss: %f, acc: %.2f%%] [G loss: %f, mse: %f]" % (epoch, d_loss[0], 100*d_loss[1], g_loss[0], g_loss[1]), end='\r')
 
                 # If at save interval => save generated image samples
                 if epoch % sample_interval == 0:
@@ -265,6 +266,6 @@ class ContextEncoder():
 if __name__ == '__main__':
     paths = get_image_paths(r"/home/ben/gans_git/auto_encoder_experiments/cocodataset/unlabeled2017")
     context_encoder = ContextEncoder()
-    context_encoder.train(paths, epochs= 30000, batch_size=128, sample_interval=50)
+    context_encoder.train(paths, epochs= 100, batch_size=128, sample_interval=50)
     context_encoder.save_model()
 
