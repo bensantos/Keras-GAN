@@ -121,16 +121,16 @@ class ContextEncoder():
 
         model = Sequential()
 
-        model.add(Conv2D(64, kernel_size=4, strides=2, input_shape=self.missing_shape, padding="same"))
+        model.add(Conv2D(512, kernel_size=4, strides=2, input_shape=self.missing_shape, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
-        model.add(Conv2D(64, kernel_size=4, strides=2, padding="same"))
+        model.add(Conv2D(256, kernel_size=4, strides=2, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
-        model.add(Conv2D(64, kernel_size=4, strides=2, padding="same"))
+        model.add(Conv2D(256, kernel_size=4, strides=2, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
-        model.add(Conv2D(64, kernel_size=4, strides=2, padding="same"))
+        model.add(Conv2D(128, kernel_size=4, strides=2, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
         model.add(Conv2D(64, kernel_size=4, strides=2, padding="same"))
@@ -184,8 +184,8 @@ class ContextEncoder():
         fake = np.zeros((batch_size, 1))
         
         for epoch in range(epochs):
-            #valid = valid - (np.random.uniform(0,.05))
-            #fake = fake + (np.random.uniform(0,.05))
+            valid = valid - (np.random.uniform(0,.05))
+            fake = fake + (np.random.uniform(0,.05))
             tq = tqdm(range(int(len(train_data)/batch_size)), desc=f"Epoch: {epoch}")
             for ind in tq:
                 # ---------------------
