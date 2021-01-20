@@ -218,8 +218,8 @@ class ContextEncoder():
 
             # If at save interval => save generated image samples
             if epoch % sample_interval == 0:
-                idx = np.random.randint(0, X_train.shape[0], 6)
-                imgs = X_train[idx]
+                #idx = np.random.randint(0, X_train.shape[0], 6)
+                #imgs = X_train[idx]
                 self.sample_images(epoch, imgs)
 
     def sample_images(self, epoch, imgs):
