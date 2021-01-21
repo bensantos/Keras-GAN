@@ -120,13 +120,13 @@ class ContextEncoder():
 
         model = Sequential()
 
-        model.add(Conv2D(128, kernel_size=4, strides=2, input_shape=self.missing_shape, padding="same"))
+        model.add(Conv2D(512, kernel_size=4, strides=2, input_shape=self.missing_shape, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
-        model.add(Conv2D(128, kernel_size=4, strides=2, padding="same"))
+        model.add(Conv2D(256, kernel_size=4, strides=2, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
-        model.add(Conv2D(128, kernel_size=4, strides=2, padding="same"))
+        model.add(Conv2D(256, kernel_size=4, strides=2, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
         model.add(Conv2D(128, kernel_size=4, strides=2, padding="same"))
@@ -224,10 +224,10 @@ class ContextEncoder():
                 if ind % sample_interval == 0:
                     #idx = np.random.randint(0, X_train.shape[0], 6)
                     #imgs = X_train[idx]
-                    self.sample_images(ind, imgs)
+                    self.sample_images(ind, epoch, imgs)
             self.save_model(epoch)
 
-    def sample_images(self, epoch, imgs):
+    def sample_images(self, ind, epoch, imgs):
         r, c = 3, 6
 
         masked_imgs, missing_parts, (y1, y2, x1, x2) = self.mask_randomly(imgs)
@@ -247,7 +247,7 @@ class ContextEncoder():
             filled_in[y1[i]:y2[i], x1[i]:x2[i], :] = gen_missing[i]
             axs[2,i].imshow(cv2.cvtColor(filled_in, cv2.COLOR_BGR2RGB))
             axs[2,i].axis('off')
-        fig.savefig("images/%d.png" % epoch)
+        fig.savefig("images/%d/%d.png" % (epoch,ind)
         plt.close()
 
     def save_model(self, epoch):
