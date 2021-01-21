@@ -35,7 +35,7 @@ class ContextEncoder():
         # Build and compile the discriminator
         self.discriminator = self.build_discriminator()
         self.discriminator.compile(loss='binary_crossentropy',
-            optimizer=Adam(0.0001, 0.5),
+            optimizer=Adam(0.0002, 0.5),
             metrics = ['accuracy'])
 
         # Build the generator
@@ -58,7 +58,7 @@ class ContextEncoder():
         self.combined = Model(masked_img , [gen_missing, valid])
         self.combined.compile(loss=['mse', 'binary_crossentropy'],
             loss_weights=[0.999, 0.001],
-            optimizer=Adam(0.0004, 0.5))
+            optimizer=Adam(0.0002, 0.5))
 
     def build_generator(self):
 
@@ -184,8 +184,8 @@ class ContextEncoder():
         fake = np.zeros((batch_size, 1))
         
         for epoch in range(epochs):
-            #valid = valid - (np.random.uniform(0,.07))
-            #fake = fake + (np.random.uniform(0,.07))
+            valid = valid - (np.random.uniform(0,.07))
+            fake = fake + (np.random.uniform(0,.07))
             tq = tqdm(range(int(len(train_data)/batch_size)), desc=f"Epoch: {epoch}")
             for ind in tq:
                 # ---------------------
