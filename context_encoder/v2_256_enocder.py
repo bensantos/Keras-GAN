@@ -247,7 +247,7 @@ class ContextEncoder():
             filled_in[y1[i]:y2[i], x1[i]:x2[i], :] = gen_missing[i]
             axs[2,i].imshow(cv2.cvtColor(filled_in, cv2.COLOR_BGR2RGB))
             axs[2,i].axis('off')
-        fig.savefig("images/%d/%d.png" % (epoch,ind))
+        fig.savefig("images/%d_%d.png" % (epoch,ind))
         plt.close()
 
     def save_model(self, epoch):
