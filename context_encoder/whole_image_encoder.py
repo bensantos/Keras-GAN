@@ -128,17 +128,17 @@ class ContextEncoder():
         deconv6 = BatchNormalization(momentum=0.8)(deconv6)
         deconv6 = concatenate([deconv6, conv2], axis = 3)
 
-        # deconv7 = Conv2DTranspose(256, kernel_size=5, strides=1, padding='same', activation='relu')(deconv6)
-        # deconv7 = LeakyReLU(alpha=0.2)(deconv7)
-        # deconv7 = BatchNormalization(momentum=0.8)(deconv7)
-        # deconv7 = concatenate([deconv7, conv1], axis = 3)
+        deconv7 = Conv2DTranspose(256, kernel_size=5, strides=2, padding='same', activation='relu')(deconv6)
+        deconv7 = LeakyReLU(alpha=0.2)(deconv7)
+        deconv7 = BatchNormalization(momentum=0.8)(deconv7)
+        deconv7 = concatenate([deconv7, conv1], axis = 3)
 
-        # deconv8 = Conv2DTranspose(128, kernel_size=5, strides=1, padding='same', activation='relu')(deconv7)
-        # deconv8 = LeakyReLU(alpha=0.2)(deconv8)
-        # deconv8 = BatchNormalization(momentum=0.8)(deconv8)
+        deconv8 = Conv2DTranspose(128, kernel_size=5, strides=2, padding='same', activation='relu')(deconv7)
+        deconv8 = LeakyReLU(alpha=0.2)(deconv8)
+        deconv8 = BatchNormalization(momentum=0.8)(deconv8)
 
 
-        out = Conv2D(3, kernel_size=5, strides=1, padding='same', activation='tanh')(deconv6) #deconv8 
+        out = Conv2D(3, kernel_size=5, strides=1, padding='same', activation='tanh')(deconv8) # 
         model = Model(img_input, out)
         model.summary()
 
@@ -152,7 +152,7 @@ class ContextEncoder():
 
         model = Sequential()
 
-        model.add(Conv2D(64, kernel_size=4, strides=2, input_shape=self.missing_shape, padding="same"))
+        model.add(Conv2D(64, kernel_size=4, strides=2, input_shape=self.img_shape, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
         model.add(Conv2D(128, kernel_size=4, strides=2, padding="same"))
@@ -163,10 +163,9 @@ class ContextEncoder():
         model.add(BatchNormalization(momentum=0.8))
         model.add(Conv2D(512, kernel_size=4, strides=2, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
-        #model.add(BatchNormalization(momentum=0.8))
 
         model.add(Dense(1, activation='sigmoid'))
-        #model.summary()
+        model.summary()
 
         img = Input(shape=self.missing_shape)
         validity = model(img)
@@ -213,6 +212,11 @@ class ContextEncoder():
         for epoch in range(epochs):
             #valid = valid - (np.random.uniform(0,.07))
             #fake = fake + (np.random.uniform(0,.07))
+            split_ind = int(len(train_data)*validation_split)
+            validation_data = train_data[:split_ind]
+            train_data = train_data[split_ind:]
+
+            image_loader = ImageLoader(5)
             tq = tqdm(range(int(len(train_data)/batch_size)), desc=f"Epoch: {epoch}")
             for ind in tq:
                 # ---------------------
@@ -220,28 +224,28 @@ class ContextEncoder():
                 # ---------------------
 
                 # Select a random batch of images
-                imgs  = create_dataset(train_data, 256, 256, batch_size)
-                imgs = imgs/127.5 - 1
+                y,masks = image_loader.load_images_parallel(train_data[ind:ind + batch_size], *args, **kwargs)
+                x = image_loader.box_crop_images(y)
 
 
                 #idx = np.random.randint(0, X_train.shape[0], batch_size)
                 #imgs = X_train[idx]
 
-                masked_imgs, missing_parts, _ = self.mask_randomly(imgs)
+                #masked_imgs, missing_parts, _ = self.mask_randomly(imgs)
 
                 # Generate a batch of new images
-                gen_missing = self.generator.predict(masked_imgs)
+                gen_missing = self.generator.predict(x)
 
                 # Train the discriminator
-                d_loss_real = self.discriminator.train_on_batch(missing_parts, valid)
-                d_loss_fake = self.discriminator.train_on_batch(gen_missing, fake)
+                d_loss_real = self.discriminator.train_on_batch(y, valid)
+                d_loss_fake = self.discriminator.train_on_batch(x, fake)
                 d_loss = 0.5 * np.add(d_loss_real, d_loss_fake)
 
                 # ---------------------
                 #  Train Generator
                 # ---------------------
 
-                g_loss = self.combined.train_on_batch(masked_imgs, [missing_parts, valid])
+                g_loss = self.combined.train_on_batch(x, [y, valid])
 
                 # Plot the progress
                 tq.set_postfix_str("%d [D loss: %f, acc: %.2f%%] [G loss: %f, mse: %f]" % (epoch, d_loss[0], 100*d_loss[1], g_loss[0], g_loss[1]))
