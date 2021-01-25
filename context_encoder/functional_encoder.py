@@ -140,7 +140,7 @@ class ContextEncoder():
 
         out = Conv2D(3, kernel_size=5, strides=1, padding='same', activation='tanh')(deconv6) #deconv8 
         model = Model(img_input, out)
-        model.summary()
+        #model.summary()
 
         #masked_img = Input(shape=self.img_shape)
         #gen_missing = model(masked_img)
@@ -164,9 +164,10 @@ class ContextEncoder():
         model.add(Conv2D(512, kernel_size=4, strides=2, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
         #model.add(BatchNormalization(momentum=0.8))
-
+        model.add(Flatten())
+        model.add(Dropout(0.5))
         model.add(Dense(1, activation='sigmoid'))
-        #model.summary()
+        model.summary()
 
         img = Input(shape=self.missing_shape)
         validity = model(img)
