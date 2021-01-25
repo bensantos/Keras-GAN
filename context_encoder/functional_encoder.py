@@ -299,7 +299,7 @@ class ContextEncoder():
 
 
 if __name__ == '__main__':
-    paths = get_image_paths(r"/home/ben/gans_git/Keras-GAN/landscapes")
+    paths = get_image_paths(r"/home/ben/gans_git/auto_encoder_experiments/cocodataset/unlabeled2017")
     context_encoder = ContextEncoder()
     context_encoder.train(paths, epochs= 100, batch_size=256, sample_interval=50, load = False)
     context_encoder.save_model()
