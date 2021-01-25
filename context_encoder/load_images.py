@@ -17,8 +17,8 @@ def get_image_paths(folder):
     halved_paths = []
     for i in range(int(paths_length/4)):
         halved_paths.append(paths[i])
-    #return halved_paths
-    return paths
+    return halved_paths
+    #return paths
 
 def create_dataset(paths, IMG_HEIGHT, IMG_WIDTH, batch_size):
     img_data_array=[]

@@ -216,8 +216,8 @@ class ContextEncoder():
         fake = np.zeros((batch_size, 1))
         
         for epoch in range(epochs):
-            valid = valid - (np.random.uniform(0,.07))
-            fake = fake + (np.random.uniform(0,.07))
+            #valid = valid - (np.random.uniform(0,.07))
+            #fake = fake + (np.random.uniform(0,.07))
             tq = tqdm(range(int(len(train_data)/batch_size)), desc=f"Epoch: {epoch}")
             for ind in tq:
                 # ---------------------
@@ -301,6 +301,6 @@ class ContextEncoder():
 if __name__ == '__main__':
     paths = get_image_paths(r"/home/ben/gans_git/auto_encoder_experiments/cocodataset/unlabeled2017")
     context_encoder = ContextEncoder()
-    context_encoder.train(paths, epochs= 100, batch_size=100, sample_interval=50, load = False)
+    context_encoder.train(paths, epochs= 100, batch_size=128, sample_interval=50, load = False)
     context_encoder.save_model()
 
