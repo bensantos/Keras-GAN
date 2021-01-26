@@ -17,6 +17,8 @@ import matplotlib.pyplot as plt
 from load_images import get_image_paths, create_dataset
 import cv2
 from tqdm import tqdm
+from esbern_load_images import load_images_from_paths, ImageLoader
+
 
 
 class ContextEncoder():
@@ -244,7 +246,7 @@ class ContextEncoder():
                 # ---------------------
                 #  Train Generator
                 # ---------------------
-
+                #The generator is then updated via the composite gan model. Importantly, the class label is set to 1 or real for the fake samples
                 g_loss = self.combined.train_on_batch(x, [y, valid])
 
                 # Plot the progress
