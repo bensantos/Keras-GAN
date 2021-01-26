@@ -219,7 +219,7 @@ class ContextEncoder():
                 # ---------------------
 
                 # Select a random batch of images
-                y,masks = image_loader.load_images_parallel(train_data[ind:ind + batch_size], *args, **kwargs)
+                y,masks = image_loader.load_images_parallel(train_data[ind:ind + batch_size])
                 x = image_loader.box_crop_images(y)
 
 
