@@ -66,7 +66,7 @@ class ContextEncoder():
     def build_generator(self):
 
         # Encoder
-        img_input = Input(self.img_shape)
+        img_input = Input((256,256,3))
         conv1 = Conv2D(64, kernel_size=5, strides=2, padding="same")(img_input)
         conv1 = LeakyReLU(alpha=0.2)(conv1)
         conv1 = BatchNormalization(momentum=0.8)(conv1)
@@ -155,7 +155,7 @@ class ContextEncoder():
 
         model = Sequential()
 
-        model.add(Conv2D(64, kernel_size=4, strides=2, input_shape=self.img_shape, padding="same"))
+        model.add(Conv2D(64, kernel_size=4, strides=2, input_shape=(256,256,3), padding="same"))
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
         model.add(Conv2D(128, kernel_size=4, strides=2, padding="same"))
@@ -170,10 +170,7 @@ class ContextEncoder():
         model.add(Dense(1, activation='sigmoid'))
         model.summary()
 
-        img = Input(shape=self.missing_shape)
-        validity = model(img)
-
-        return Model(img, validity)
+        return model
 
     def mask_randomly(self, imgs):
         y1 = np.random.randint(0, self.img_rows - self.mask_height, imgs.shape[0])
@@ -221,12 +218,7 @@ class ContextEncoder():
                 # Select a random batch of images
                 y,masks = image_loader.load_images_parallel(train_data[ind:ind + batch_size])
                 x = image_loader.box_crop_images(y)
-
-
-                #idx = np.random.randint(0, X_train.shape[0], batch_size)
-                #imgs = X_train[idx]
-
-                #masked_imgs, missing_parts, _ = self.mask_randomly(imgs)
+                
 
                 # Generate a batch of new images
                 gen_missing = self.generator.predict(x)
