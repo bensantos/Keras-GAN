@@ -193,32 +193,24 @@ class ContextEncoder():
 
 
 
-    def train(self, train_data, epochs, batch_size=256, sample_interval=50, load = False):
+    def train(self, train_data, epochs, batch_size=256, validation_split = 0.2, sample_interval=50, load = False):
+        random.shuffle(train_data)
+        split_ind = int(len(train_data)*validation_split)
+        validation_data = train_data[:split_ind]
+        train_data = train_data[split_ind:]
 
         if load == True:
             self.generator = keras.models.load_model()
-        #(X_train, y_train), (_, _) = cifar10.load_data()
-        # Extract dogs and cats
-        #X_cats = X_train[(y_train == 3).flatten()]
-        #X_dogs = X_train[(y_train == 5).flatten()]
-        #X_train = np.vstack((X_cats, X_dogs))
 
-        # Rescale -1 to 1
-        #X_train = X_train / 127.5 - 1.
-        #y_train = y_train.reshape(-1, 1)
 
         # Adversarial ground truths
         valid = np.ones((batch_size, 1))
         fake = np.zeros((batch_size, 1))
-        
+                    image_loader = ImageLoader(5)
         for epoch in range(epochs):
             #valid = valid - (np.random.uniform(0,.07))
             #fake = fake + (np.random.uniform(0,.07))
-            split_ind = int(len(train_data)*validation_split)
-            validation_data = train_data[:split_ind]
-            train_data = train_data[split_ind:]
 
-            image_loader = ImageLoader(5)
             tq = tqdm(range(int(len(train_data)/batch_size)), desc=f"Epoch: {epoch}")
             for ind in tq:
                 # ---------------------
