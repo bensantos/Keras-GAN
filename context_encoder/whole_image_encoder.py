@@ -206,7 +206,7 @@ class ContextEncoder():
         # Adversarial ground truths
         valid = np.ones((batch_size, 1))
         fake = np.zeros((batch_size, 1))
-                    image_loader = ImageLoader(5)
+        image_loader = ImageLoader(5)
         for epoch in range(epochs):
             #valid = valid - (np.random.uniform(0,.07))
             #fake = fake + (np.random.uniform(0,.07))
