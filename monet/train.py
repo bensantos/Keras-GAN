@@ -76,7 +76,7 @@ def update_image_pool(pool, images, max_size=50):
 # train cyclegan models
 def train(d_model_A, d_model_B, g_model_AtoB, g_model_BtoA, c_model_AtoB, c_model_BtoA, dataset):
     # define properties of the training run
-    n_epochs, n_batch, = 100, 100
+    n_epochs, n_batch, = 100, 1
     # determine the output square shape of the discriminator
     n_patch = d_model_A.output_shape[1]
     # unpack dataset
@@ -112,10 +112,12 @@ def train(d_model_A, d_model_B, g_model_AtoB, g_model_BtoA, c_model_AtoB, c_mode
         print('>%d, dA[%.3f,%.3f] dB[%.3f,%.3f] g[%.3f,%.3f]' % (i+1, dA_loss1,dA_loss2, dB_loss1,dB_loss2, g_loss1,g_loss2))
         # evaluate the model performance every so often
         if (i+1) % (bat_per_epo * 1) == 0:
+            #Images are generated using both generators each epoch 
             # plot A->B translation
             summarize_performance(i, g_model_AtoB, trainA, 'AtoB')
             # plot B->A translation
             summarize_performance(i, g_model_BtoA, trainB, 'BtoA')
         if (i+1) % (bat_per_epo * 5) == 0:
             # save the models
+            #models are saved every five epochs or (1187 * 5) 5,935 training iterations.
             save_models(i, g_model_AtoB, g_model_BtoA)
