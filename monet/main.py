@@ -24,7 +24,7 @@ from train import train
 from prep_samples import load_real_samples
 
 # load image data
-dataset = load_real_samples(r'\home\ben\gans_git\monet.npz')
+dataset = load_real_samples('/home/ben/gans_git/monet.npz')
 print('Loaded', dataset[0].shape, dataset[1].shape)
 # define input shape based on the loaded dataset
 image_shape = dataset[0].shape[1:]
