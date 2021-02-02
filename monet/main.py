@@ -22,6 +22,8 @@ from discriminator import define_discriminator
 from composite import define_composite_model
 from train import train
 from prep_samples import load_real_samples
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # or any {'0', '1', '2'}
 
 # load image data
 dataset = load_real_samples('/home/ben/gans_git/monet.npz')
