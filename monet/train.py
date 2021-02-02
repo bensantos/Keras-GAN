@@ -76,7 +76,7 @@ def update_image_pool(pool, images, max_size=50):
 # train cyclegan models
 def train(d_model_A, d_model_B, g_model_AtoB, g_model_BtoA, c_model_AtoB, c_model_BtoA, dataset):
     # define properties of the training run
-    n_epochs, n_batch, = 100, 1
+    n_epochs, n_batch, = 100, 100
     # determine the output square shape of the discriminator
     n_patch = d_model_A.output_shape[1]
     # unpack dataset
