@@ -14,7 +14,7 @@ from keras.layers import LeakyReLU
 from keras.layers import Activation
 from keras.layers import Concatenate
 from keras_contrib.layers.normalization.instancenormalization import InstanceNormalization
-
+from matplotlib import pyplot
 from prep_samples import generate_fake_samples, generate_real_samples
 from prep_samples import load_real_samples
 #helper functions
