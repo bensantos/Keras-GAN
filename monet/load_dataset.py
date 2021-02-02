@@ -20,7 +20,7 @@ def load_images(path, size=(256,256)):
 	return asarray(data_list)
 
 # dataset path
-path = r'D:\Kaspar\Keras-GANs\Keras-GAN\monet\dataset\downloads\extracted\monet2photo/'
+path = r'D:\Kaspar\monet_dataset\downloads\extracted\monet2photo/'
 # load dataset A
 dataA1 = load_images(path + 'trainA/')
 dataAB = load_images(path + 'testA/')

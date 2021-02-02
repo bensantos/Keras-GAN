@@ -19,10 +19,12 @@ from keras_contrib.layers.normalization.instancenormalization import InstanceNor
 
 from generator import define_generator
 from discriminator import define_discriminator
-from compostie import define_composite_model
+from composite import define_composite_model
 from train import train
+from prep_samples import load_real_samples
+
 # load image data
-dataset = load_real_samples('horse2zebra_256.npz')
+dataset = load_real_samples(r'D:\Kaspar\monet_dataset\horse2zebra_256.npz')
 print('Loaded', dataset[0].shape, dataset[1].shape)
 # define input shape based on the loaded dataset
 image_shape = dataset[0].shape[1:]

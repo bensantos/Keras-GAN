@@ -16,6 +16,17 @@ from keras.layers import Concatenate
 from keras_contrib.layers.normalization.instancenormalization import InstanceNormalization
 from matplotlib import pyplot
 
+# load and prepare training images
+def load_real_samples(filename):
+    # load the dataset
+    data = load(filename)
+    # unpack arrays
+    X1, X2 = data['arr_0'], data['arr_1']
+    # scale from [0,255] to [-1,1]
+    X1 = (X1 - 127.5) / 127.5
+    X2 = (X2 - 127.5) / 127.5
+    return [X1, X2]
+
 def generate_real_samples(dataset, n_samples, patch_shape):
     # choose random instances
     ix = randint(0, dataset.shape[0], n_samples)

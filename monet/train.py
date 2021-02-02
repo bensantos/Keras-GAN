@@ -15,7 +15,8 @@ from keras.layers import Activation
 from keras.layers import Concatenate
 from keras_contrib.layers.normalization.instancenormalization import InstanceNormalization
 
-from load_dataset import generate_fake_samples, generate_real_samples
+from prep_samples import generate_fake_samples, generate_real_samples
+from prep_samples import load_real_samples
 #helper functions
 # save the generator models to file
 def save_models(step, g_model_AtoB, g_model_BtoA):
