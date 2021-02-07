@@ -21,10 +21,10 @@ from prep_samples import load_real_samples
 # save the generator models to file
 def save_models(step, g_model_AtoB, g_model_BtoA):
     # save the first generator model
-    filename1 = 'g_model_AtoB_%06d.h5' % (step+1)
+    filename1 = 'g_model_AtoB_%06d_resumed.h5' % (step+1)
     g_model_AtoB.save(filename1)
     # save the second generator model
-    filename2 = 'g_model_BtoA_%06d.h5' % (step+1)
+    filename2 = 'g_model_BtoA_%06d_resumed.h5' % (step+1)
     g_model_BtoA.save(filename2)
     print('>Saved: %s and %s' % (filename1, filename2))
 

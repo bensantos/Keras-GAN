@@ -54,6 +54,12 @@ if load == True:
     c_model_BtoA = load_model(r"/home/ben/gans_git/Keras-GAN/monet/g_model_BtoA_059650.h5", custom_objects={'InstanceNormalization':keras_contrib.layers.InstanceNormalization})
     c_model_AtoB = load_model(r"/home/ben/gans_git/Keras-GAN/monet/g_model_AtoB_029825.h5", custom_objects={'InstanceNormalization':keras_contrib.layers.InstanceNormalization})
 
+    #compile
+    c_model_BtoA.compile(loss='mse', optimizer=Adam(lr=0.0002, beta_1=0.5), loss_weights=[0.5])
+    c_model_AtoB.compile(loss='mse', optimizer=Adam(lr=0.0002, beta_1=0.5), loss_weights=[0.5])
+
+
+
 else:
     # generator: A -> B
     g_model_AtoB = define_generator(image_shape)
