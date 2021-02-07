@@ -35,7 +35,7 @@ print('Loaded', dataset[0].shape, dataset[1].shape)
 # define input shape based on the loaded dataset
 image_shape = dataset[0].shape[1:]
 
-if load = True:
+if load == True:
     # generator: A -> B
     g_model_AtoB = define_generator(image_shape)
     # generator: B -> A
