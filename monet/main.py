@@ -15,6 +15,7 @@ from keras.layers import Conv2DTranspose
 from keras.layers import LeakyReLU
 from keras.layers import Activation
 from keras.layers import Concatenate
+import keras_contrib
 from keras_contrib.layers.normalization.instancenormalization import InstanceNormalization
 
 from generator import define_generator
