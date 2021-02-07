@@ -29,7 +29,7 @@ from keras.models import load_model
 
 
 #will model load
-load = False
+load = True
 # load image data
 dataset = load_real_samples('/home/ben/gans_git/monet.npz')
 print('Loaded', dataset[0].shape, dataset[1].shape)
