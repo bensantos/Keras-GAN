@@ -50,8 +50,8 @@ if load == True:
     c_model_BtoA = define_composite_model(g_model_BtoA, d_model_A, g_model_AtoB, image_shape)
 
     #load the weights
-    c_model_BtoA = load_model(r"/home/ben/gans_git/Keras-GAN/monet/g_model_BtoA_059650.h5")
-    c_model_AtoB = load_model(r"/home/ben/gans_git/Keras-GAN/monet/g_model_AtoB_029825.h5")
+    c_model_BtoA = load_model(r"/home/ben/gans_git/Keras-GAN/monet/g_model_BtoA_059650.h5", custom_objects={'InstanceNormalization':keras_contrib.layers.InstanceNormalization})
+    c_model_AtoB = load_model(r"/home/ben/gans_git/Keras-GAN/monet/g_model_AtoB_029825.h5", custom_objects={'InstanceNormalization':keras_contrib.layers.InstanceNormalization})
 
 else:
     # generator: A -> B
