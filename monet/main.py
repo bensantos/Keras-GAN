@@ -29,7 +29,7 @@ from keras.models import load_model
 
 
 #will model load
-load = True
+load = False
 # load image data
 dataset = load_real_samples('/home/ben/gans_git/monet.npz')
 print('Loaded', dataset[0].shape, dataset[1].shape)
@@ -55,8 +55,8 @@ if load == True:
     c_model_AtoB = load_model(r"/home/ben/gans_git/Keras-GAN/monet/g_model_AtoB_029825.h5", custom_objects={'InstanceNormalization':keras_contrib.layers.InstanceNormalization})
 
     #compile
-    c_model_BtoA.compile(loss='mse', optimizer=Adam(lr=0.0002, beta_1=0.5), loss_weights=[0.5])
-    c_model_AtoB.compile(loss='mse', optimizer=Adam(lr=0.0002, beta_1=0.5), loss_weights=[0.5])
+    c_model_BtoA.compile()
+    c_model_AtoB.compile()
 
 
 
