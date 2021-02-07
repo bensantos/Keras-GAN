@@ -99,7 +99,7 @@ def train(d_model_A, d_model_B, g_model_AtoB, g_model_BtoA, c_model_AtoB, c_mode
         X_fakeA = update_image_pool(poolA, X_fakeA)
         X_fakeB = update_image_pool(poolB, X_fakeB)
         # update generator B->A via adversarial and cycle loss
-        g_loss2, _, _, _, _  = c_model_BtoA.train_on_batch((X_realB, X_realA),([y_realA, X_realA, X_realB, X_realA))
+        g_loss2, _, _, _, _  = c_model_BtoA.train_on_batch((X_realB, X_realA),((y_realA, X_realA, X_realB, X_realA))
         # update discriminator for A -> [real/fake]
         dA_loss1 = d_model_A.train_on_batch(X_realA, y_realA)
         dA_loss2 = d_model_A.train_on_batch(X_fakeA, y_fakeA)
