@@ -142,7 +142,7 @@ def train(d_model_A, d_model_B, g_model_AtoB, g_model_BtoA, c_model_AtoB, c_mode
             summarize_performance(i, g_model_AtoB, trainA, 'AtoB')
             # plot B->A translation
             summarize_performance(i, g_model_BtoA, trainB, 'BtoA')
-        if (i+1) % (bat_per_epo * 5) == 0:
+        if (i+1) % (10) == 0:
             # save the models
             #models are saved every five epochs or (1187 * 5) 5,935 training iterations.
             save_models(i, g_model_AtoB, g_model_BtoA)
