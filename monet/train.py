@@ -17,7 +17,7 @@ from keras_contrib.layers.normalization.instancenormalization import InstanceNor
 from matplotlib import pyplot
 from prep_samples import generate_fake_samples, generate_real_samples
 from prep_samples import load_real_samples
-from tensorflow as tf
+import tensorflow as tf
 #helper functions
 # save the generator models to file
 def save_models(step, g_model_AtoB, g_model_BtoA):
