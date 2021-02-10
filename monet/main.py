@@ -34,6 +34,7 @@ load = True
 dataset = load_real_samples('/home/ben/gans_git/monet.npz')
 print('Loaded', dataset[0].shape, dataset[1].shape)
 # define input shape based on the loaded dataset
+image_shape = dataset[0].shape[1:]
 
 # generator: A -> B
 g_model_AtoB = define_generator(image_shape)
