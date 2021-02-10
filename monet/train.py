@@ -17,6 +17,7 @@ from keras_contrib.layers.normalization.instancenormalization import InstanceNor
 from matplotlib import pyplot
 from prep_samples import generate_fake_samples, generate_real_samples
 from prep_samples import load_real_samples
+from tf.train import CheckpointManager
 #helper functions
 # save the generator models to file
 def save_models(step, g_model_AtoB, g_model_BtoA):
@@ -72,10 +73,7 @@ def update_image_pool(pool, images, max_size=50):
 
 
 
-# if a checkpoint exists, restore the latest checkpoint.
-if ckpt_manager.latest_checkpoint:
-  ckpt.restore(ckpt_manager.latest_checkpoint)
-  print ('Latest checkpoint restored!!')
+
 #+------------------+
 #      TRAIN
 #+------------------+
@@ -96,6 +94,11 @@ def train(d_model_A, d_model_B, g_model_AtoB, g_model_BtoA, c_model_AtoB, c_mode
                             c_model_AtoB_optimizer= Adam(lr=0.0002, beta_1=0.5),
                             c_model_BtoA_optimizer= Adam(lr=0.0002, beta_1=0.5))
     ckpt_manager = tf.train.CheckpointManager(ckpt, checkpoint_path, max_to_keep=5)
+
+    # if a checkpoint exists, restore the latest checkpoint.
+    if ckpt_manager.latest_checkpoint:
+        ckpt.restore(ckpt_manager.latest_checkpoint)
+        print ('Latest checkpoint restored!!')
 
     # define properties of the training run
     n_epochs, n_batch, = 100, 1
