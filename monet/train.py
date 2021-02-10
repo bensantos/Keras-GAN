@@ -70,11 +70,33 @@ def update_image_pool(pool, images, max_size=50):
             pool[ix] = image
     return asarray(selected)
 
+
+
+# if a checkpoint exists, restore the latest checkpoint.
+if ckpt_manager.latest_checkpoint:
+  ckpt.restore(ckpt_manager.latest_checkpoint)
+  print ('Latest checkpoint restored!!')
 #+------------------+
 #      TRAIN
 #+------------------+
 # train cyclegan models
 def train(d_model_A, d_model_B, g_model_AtoB, g_model_BtoA, c_model_AtoB, c_model_BtoA, dataset):
+     ##CHECK POINT##
+     #manager#
+    checkpoint_path = "./checkpoints"
+
+    ckpt = tf.train.Checkpoint(g_model_AtoB=g_model_AtoB,
+                            g_model_BtoA=g_model_BtoA,
+                            d_model_A=d_model_A,
+                            d_model_B=d_model_B,
+                            c_model_AtoB = c_model_AtoB,
+                            c_model_BtoA = c_model_BtoA,
+                            d_model_A_optimizer= Adam(lr=0.0002, beta_1=0.5),
+                            d_model_B_optimizer= Adam(lr=0.0002, beta_1=0.5),
+                            c_model_AtoB_optimizer= Adam(lr=0.0002, beta_1=0.5),
+                            c_model_BtoA_optimizer= Adam(lr=0.0002, beta_1=0.5))
+    ckpt_manager = tf.train.CheckpointManager(ckpt, checkpoint_path, max_to_keep=5)
+
     # define properties of the training run
     n_epochs, n_batch, = 100, 1
     # determine the output square shape of the discriminator
@@ -121,3 +143,5 @@ def train(d_model_A, d_model_B, g_model_AtoB, g_model_BtoA, c_model_AtoB, c_mode
             # save the models
             #models are saved every five epochs or (1187 * 5) 5,935 training iterations.
             save_models(i, g_model_AtoB, g_model_BtoA)
+            ckpt_save_path = ckpt_manager.save()
+            print ('Saving checkpoint for epoch {} at {}'.format(epoch+1, ckpt_save_path))
