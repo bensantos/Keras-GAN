@@ -26,7 +26,7 @@ def load_image(filename, size=(256,256)):
 image_src = load_image(r'D:\Kaspar\monet_dataset\downloads\extracted\monet2photo\trainB/2014-04-15 09_34_13.jpg')
 # load the model
 cust = {'InstanceNormalization': InstanceNormalization}
-model_BtoA = load_model(r'D:\Kaspar\monet_dataset\models\g_model_BtoA_053685.h5', cust)
+model_BtoA = load_model(r'D:\Kaspar\images\monet\g_model_BtoA_119300.h5', cust)
 print("start")
 # translate image
 image_tar = model_BtoA.predict(image_src)

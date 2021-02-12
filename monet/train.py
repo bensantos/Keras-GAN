@@ -22,10 +22,10 @@ import tensorflow as tf
 # save the generator models to file
 def save_models(step, g_model_AtoB, g_model_BtoA):
     # save the first generator model
-    filename1 = 'g_model_AtoB_%06d.h5' % (step+1)
+    filename1 = 'g_model_AtoB_%06d_2.h5' % (step+1)
     g_model_AtoB.save(filename1)
     # save the second generator model
-    filename2 = 'g_model_BtoA_%06d.h5' % (step+1)
+    filename2 = 'g_model_BtoA_%06d_2.h5' % (step+1)
     g_model_BtoA.save(filename2)
     print('>Saved: %s and %s' % (filename1, filename2))
 
@@ -49,7 +49,7 @@ def summarize_performance(step, g_model, trainX, name, n_samples=5):
         pyplot.axis('off')
         pyplot.imshow(X_out[i])
     # save plot to file
-    filename1 = '%s_generated_plot_%06d.png' % (name, (step+1))
+    filename1 = '%s_generated_plot_%06d_2.png' % (name, (step+1))
     pyplot.savefig(filename1)
     pyplot.close()
 
