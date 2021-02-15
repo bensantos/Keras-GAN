@@ -22,16 +22,18 @@ def load_image(filename, size=(256,256)):
     pixels = (pixels - 127.5) / 127.5
     return pixels
 
-# load the image
-image_src = load_image(r'D:\Kaspar\monet_dataset\downloads\extracted\monet2photo\trainB/2014-04-15 09_34_13.jpg')
-# load the model
-cust = {'InstanceNormalization': InstanceNormalization}
-model_BtoA = load_model(r'D:\Kaspar\images\monet\g_model_BtoA_119300.h5', cust)
-print("start")
-# translate image
-image_tar = model_BtoA.predict(image_src)
-# scale from [-1,1] to [0,1]
-image_tar = (image_tar + 1) / 2.0
-# plot the translated image
-pyplot.imshow(image_tar[0])
-pyplot.show()
+models = os.listdir(/home/ben/gans_git/Keras-GAN/monet/models/)
+for i in range(len(models)):
+    # load the image
+    image_src = load_image(r'D:\Kaspar\images\landscapes\000000502.jpg')
+    # load the model
+    cust = {'InstanceNormalization': InstanceNormalization}
+    model_BtoA = load_model(r'/home/ben/gans_git/Keras-GAN/monet/models/{}'.format(models[i]), cust)
+    # translate image
+    image_tar = model_BtoA.predict(image_src)
+    # scale from [-1,1] to [0,1]
+    image_tar = (image_tar + 1) / 2.0
+    # plot the translated image
+    fig = pyplot.figure()
+    pyplot.imshow(image_tar[0])
+    pyplot.savefig("{}.jpg".format(i))
