@@ -22,10 +22,10 @@ def load_image(filename, size=(256,256)):
     pixels = (pixels - 127.5) / 127.5
     return pixels
 
-models = os.listdir(/home/ben/gans_git/Keras-GAN/monet/models/)
+models = os.listdir(r'/home/ben/gans_git/Keras-GAN/monet/models/')
 for i in range(len(models)):
     # load the image
-    image_src = load_image(r'D:\Kaspar\images\landscapes\000000502.jpg')
+    image_src = load_image(r'/home/ben/gans_git/auto_encoder_experiments/cocodataset/unlabeled2017/000000280262.jpg')
     # load the model
     cust = {'InstanceNormalization': InstanceNormalization}
     model_BtoA = load_model(r'/home/ben/gans_git/Keras-GAN/monet/models/{}'.format(models[i]), cust)
