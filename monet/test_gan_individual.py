@@ -36,4 +36,4 @@ for i in range(len(models)):
     # plot the translated image
     fig = pyplot.figure()
     pyplot.imshow(image_tar[0])
-    pyplot.savefig("{}.jpg".format(i))
+    pyplot.savefig("{}.jpg".format(models[i]))
